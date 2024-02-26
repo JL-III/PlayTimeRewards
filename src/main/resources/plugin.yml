@@ -1,0 +1,10 @@
+name: PlayTimeRewards
+version: '${version}'
+main: com.playtheatria.playtimerewards.PlayTimeRewards
+api-version: '1.20'
+commands:
+  ptr:
+    description: Playtime Rewards command
+    usage: /ptr
+    permission: ptr.admin
+    aliases: [playtimerewards, ptr]
