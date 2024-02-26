@@ -20,12 +20,12 @@ public class PlayerReward implements Listener {
 
     private final ConcurrentHashMap<UUID, Long> playerRewardTotals;
 
-    private final List<UUID> playerBlackList;
+    private final List<UUID> playerOverLimitList;
 
-    public PlayerReward(ConfigManager configManager, ConcurrentHashMap<UUID, Long> playerRewardTotals, List<UUID> playerBlackList) {
+    public PlayerReward(ConfigManager configManager, ConcurrentHashMap<UUID, Long> playerRewardTotals, List<UUID> playerOverLimitList) {
         this.configManager = configManager;
         this.playerRewardTotals = playerRewardTotals;
-        this.playerBlackList = playerBlackList;
+        this.playerOverLimitList = playerOverLimitList;
     }
 
     @EventHandler
@@ -34,16 +34,12 @@ public class PlayerReward implements Listener {
         if (player == null) {
             return;
         }
-        if (playerBlackList.contains(player.getUniqueId())) {
-            Bukkit.getConsoleSender().sendMessage("Player: " + player.getName() + " is on the blacklist and will not receive rewards.");
-            return;
-        }
         if (playerRewardTotals.containsKey(player.getUniqueId())) {
             long total = playerRewardTotals.get(player.getUniqueId()) + event.getReward();
             if (total > configManager.getRewardCap()) {
                 Bukkit.getConsoleSender().sendMessage("Player: " + player.getName() + " has reached their reward cap for the day!");
                 Bukkit.getConsoleSender().sendMessage("Player: " + player.getName() + " has been added to the blacklist.");
-                playerBlackList.add(player.getUniqueId());
+                playerOverLimitList.add(player.getUniqueId());
                 return;
             }
             playerRewardTotals.put(player.getUniqueId(), total);

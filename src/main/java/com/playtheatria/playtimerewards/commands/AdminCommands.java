@@ -15,12 +15,12 @@ public class AdminCommands implements CommandExecutor {
 
     private final ConfigManager configManager;
     private final List<PlayerSession> playerSessions;
-    private final List<UUID> playerBlackList;
+    private final List<UUID> playerOverLimitList;
 
-    public AdminCommands(ConfigManager configManager, List<PlayerSession> playerSessions, List<UUID> playerBlackList) {
+    public AdminCommands(ConfigManager configManager, List<PlayerSession> playerSessions, List<UUID> playerOverLimitList) {
         this.configManager = configManager;
         this.playerSessions = playerSessions;
-        this.playerBlackList = playerBlackList;
+        this.playerOverLimitList = playerOverLimitList;
     }
 
     @Override
@@ -41,9 +41,9 @@ public class AdminCommands implements CommandExecutor {
                 for (PlayerSession playerSession : playerSessions) {
                     commandSender.sendMessage(" - Player: " + Bukkit.getOfflinePlayer(playerSession.playerUUID()).getName() + ", Time: " + new Date(playerSession.loginTime()));
                 }
-                commandSender.sendMessage("Blacklist size: " + playerBlackList.size());
-                for (UUID uuid : playerBlackList) {
-                    commandSender.sendMessage(" - Blacklisted: " + Bukkit.getOfflinePlayer(uuid).getName());
+                commandSender.sendMessage("OverLimitList size: " + playerOverLimitList.size());
+                for (UUID uuid : playerOverLimitList) {
+                    commandSender.sendMessage(" - OverLimit: " + Bukkit.getOfflinePlayer(uuid).getName());
                 }
             } else {
                 commandSender.sendMessage("Invalid argument.");

@@ -6,7 +6,7 @@ import com.playtheatria.playtimerewards.listeners.*;
 import com.playtheatria.playtimerewards.records.PlayerSession;
 import com.playtheatria.playtimerewards.time.DayCheck;
 import com.playtheatria.playtimerewards.time.InitialPlayerLoad;
-import com.playtheatria.playtimerewards.time.RewardCheck;
+import com.playtheatria.playtimerewards.time.RewardDispatch;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,7 +19,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public final class PlayTimeRewards extends JavaPlugin {
 
     private final List<PlayerSession> playerSessions = new CopyOnWriteArrayList<>();
-    private final List<UUID> playerBlackList = new CopyOnWriteArrayList<>();
+    private final List<UUID> playerOverLimitList = new CopyOnWriteArrayList<>();
     private final ConcurrentHashMap<UUID, Long> playerRewardTotals = new ConcurrentHashMap<>();
 
     @Override
@@ -30,12 +30,12 @@ public final class PlayTimeRewards extends JavaPlugin {
         ConfigManager configManager = new ConfigManager(this);
         Bukkit.getPluginManager().registerEvents(new PlayerLogin(playerSessions), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuit(this, configManager), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerReward(configManager, playerRewardTotals, playerBlackList), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerReward(configManager, playerRewardTotals, playerOverLimitList), this);
         Bukkit.getPluginManager().registerEvents(new SessionRemove(playerSessions), this);
-        Bukkit.getPluginManager().registerEvents(new DayChange(playerRewardTotals, playerBlackList), this);
-        Objects.requireNonNull(getCommand("ptr")).setExecutor(new AdminCommands(configManager, playerSessions, playerBlackList));
+        Bukkit.getPluginManager().registerEvents(new DayChange(playerRewardTotals, playerOverLimitList), this);
+        Objects.requireNonNull(getCommand("ptr")).setExecutor(new AdminCommands(configManager, playerSessions, playerOverLimitList));
 
-        new RewardCheck(configManager, playerSessions).runTaskTimer(this, 0, 20 * configManager.getRewardInterval());
+        new RewardDispatch(configManager, playerSessions, playerOverLimitList).runTaskTimer(this, 0, 20 * configManager.getRewardInterval());
         new DayCheck(this);
     }
 }

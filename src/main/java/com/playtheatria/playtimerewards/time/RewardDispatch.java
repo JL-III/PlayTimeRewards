@@ -8,16 +8,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.UUID;
 
-public class RewardCheck extends BukkitRunnable {
+public class RewardDispatch extends BukkitRunnable {
 
     private final ConfigManager configManager;
-
     private final List<PlayerSession> playerSessions;
+    private final List<UUID> playerOverLimitList;
 
-    public RewardCheck(ConfigManager configManager, List<PlayerSession> playerSessions) {
+    public RewardDispatch(ConfigManager configManager, List<PlayerSession> playerSessions, List<UUID> playerOverLimitList) {
         this.configManager = configManager;
         this.playerSessions = playerSessions;
+        this.playerOverLimitList = playerOverLimitList;
     }
 
     @Override
@@ -25,6 +27,9 @@ public class RewardCheck extends BukkitRunnable {
         Bukkit.getConsoleSender().sendMessage("Calculating rewards for player sessions...");
         Bukkit.getConsoleSender().sendMessage(playerSessions.size() + " in sessions list.");
         playerSessions.forEach(playerSession -> {
+            if (playerOverLimitList.contains(playerSession.playerUUID())) {
+                return;
+            }
             Bukkit.getPluginManager().callEvent(new RewardEvent(playerSession.playerUUID(), getRewardAmount(playerSession)));
         });
     }
