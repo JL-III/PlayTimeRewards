@@ -32,8 +32,10 @@ public class RewardCheck implements Listener {
         if (player == null) {
             return;
         }
-        if (playerRewardTotals.containsKey(player.getUniqueId())) {
-            long total = playerRewardTotals.get(player.getUniqueId()) + event.getReward();
+        if (!playerRewardTotals.containsKey(player.getUniqueId())) {
+            playerRewardTotals.put(player.getUniqueId(), 0L);
+        } else {
+            long total = playerRewardTotals.getOrDefault(player.getUniqueId(), 0L) + event.getReward();
             if (total > configManager.getRewardCap()) {
                 Bukkit.getConsoleSender().sendMessage("[PlayTimeRewards]: " + player.getName() + " has reached their reward cap for the day!");
                 Bukkit.getConsoleSender().sendMessage("[PlayTimeRewards]: " + player.getName() + " has been added to the playerOverLimitList.");
