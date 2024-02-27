@@ -27,6 +27,6 @@ public class InitialPlayerSessionLoad {
                     playerSessions.add(new PlayerSession(System.currentTimeMillis(), player.getUniqueId()));
                 }
             }
-        }.runTaskLater(plugin, 20 * 5);
+        }.runTaskLater(plugin, 0);
     }
 }
