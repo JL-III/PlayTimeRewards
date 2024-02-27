@@ -30,7 +30,12 @@ public class Reward implements Listener {
         if (player == null) {
             return;
         }
-        playerRewardTotals.put(player.getUniqueId(), event.getReward());
+        if (playerRewardTotals.containsKey(player.getUniqueId())) {
+            long total = playerRewardTotals.get(player.getUniqueId()) + event.getReward();
+            playerRewardTotals.put(player.getUniqueId(), total);
+        } else {
+            playerRewardTotals.put(player.getUniqueId(), event.getReward());
+        }
 
         Bukkit.getConsoleSender().sendMessage("[PlayTimeRewards]: " + "Player " + player.getName() + " has been rewarded " + event.getReward() + " playtime rewards.");
         Bukkit.getConsoleSender().sendMessage("[PlayTimeRewards]: " + "Player's total rewards today: " + playerRewardTotals.get(player.getUniqueId()));

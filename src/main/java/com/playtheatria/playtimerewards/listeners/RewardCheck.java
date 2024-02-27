@@ -40,9 +40,7 @@ public class RewardCheck implements Listener {
                 playerOverLimitList.add(player.getUniqueId());
                 return;
             }
-            Bukkit.getPluginManager().callEvent(new RewardEvent(player.getUniqueId(), total));
-        } else {
-            Bukkit.getPluginManager().callEvent(new RewardEvent(player.getUniqueId(), event.getReward()));
         }
+        Bukkit.getPluginManager().callEvent(new RewardEvent(player.getUniqueId(), event.getReward()));
     }
 }
