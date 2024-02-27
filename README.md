@@ -1,4 +1,4 @@
-# TheatriaPlayTimeRewards
+# PlayTimeRewards
 
 Players receive rewards for being online.
 
