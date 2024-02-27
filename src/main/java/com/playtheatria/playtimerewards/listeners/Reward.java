@@ -36,12 +36,16 @@ public class Reward implements Listener {
         Bukkit.getConsoleSender().sendMessage("[PlayTimeRewards]: " + "Player's total rewards today: " + playerRewardTotals.get(player.getUniqueId()));
 
         player.sendMessage(Component.text(
-                "[PlayTimeRewards]: " + "You have been rewarded " + event.getReward() + " denarii.")
+                "[PlayTimeRewards]: " + "You made some money!")
                 .color(NamedTextColor.GREEN)
-                .hoverEvent(HoverEvent.showText(Component.text(
-                        "Hi, " + player.getName() + "!\n" +
-                        "Earnings report: \n" +
-                        + playerRewardTotals.get(player.getUniqueId()) + "/" + configManager.getRewardCap()).color(NamedTextColor.YELLOW)))
-        );
+                .hoverEvent(HoverEvent.showText(
+                        Component.text().content("-----Playtime Rewards report-----\n").color(NamedTextColor.YELLOW)
+                                .append(Component.text().content("Current payout: ").color(NamedTextColor.YELLOW))
+                                .append(Component.text().content(event.getReward() + "\n").color(NamedTextColor.GREEN))
+                                .append(Component.text().content("Total payout today: ").color(NamedTextColor.YELLOW))
+                                .append(Component.text().content(playerRewardTotals.get(player.getUniqueId()) + "\n").color(NamedTextColor.GREEN))
+                                .append(Component.text().content("Daily cap: ").color(NamedTextColor.YELLOW))
+                                .append(Component.text().content("" + configManager.getRewardCap()).color(NamedTextColor.GREEN))
+                )));
     }
 }
