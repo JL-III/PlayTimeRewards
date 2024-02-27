@@ -1,8 +1,7 @@
 package com.playtheatria.playtimerewards.time;
 
-
 import com.playtheatria.playtimerewards.config.ConfigManager;
-import com.playtheatria.playtimerewards.events.RewardEvent;
+import com.playtheatria.playtimerewards.events.RewardCheckEvent;
 import com.playtheatria.playtimerewards.records.PlayerSession;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -30,7 +29,7 @@ public class RewardDispatch extends BukkitRunnable {
             if (playerOverLimitList.contains(playerSession.playerUUID())) {
                 return;
             }
-            Bukkit.getPluginManager().callEvent(new RewardEvent(playerSession.playerUUID(), getRewardAmount(playerSession)));
+            Bukkit.getPluginManager().callEvent(new RewardCheckEvent(playerSession.playerUUID(), getRewardAmount(playerSession)));
         });
     }
 

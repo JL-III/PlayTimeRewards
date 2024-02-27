@@ -8,13 +8,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
-public class InitialPlayerLoad {
+public class InitialPlayerSessionLoad {
 
     private final PlayTimeRewards plugin;
 
     private final List<PlayerSession> playerSessions;
 
-    public InitialPlayerLoad(PlayTimeRewards plugin, List<PlayerSession> playerSessions) {
+    public InitialPlayerSessionLoad(PlayTimeRewards plugin, List<PlayerSession> playerSessions) {
         this.plugin = plugin;
         this.playerSessions = playerSessions;
     }

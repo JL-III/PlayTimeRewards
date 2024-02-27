@@ -6,6 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scheduler.BukkitWorker;
 
 import java.util.Date;
 import java.util.List;
@@ -44,6 +46,14 @@ public class AdminCommands implements CommandExecutor {
                 commandSender.sendMessage("OverLimitList size: " + playerOverLimitList.size());
                 for (UUID uuid : playerOverLimitList) {
                     commandSender.sendMessage(" - OverLimit: " + Bukkit.getOfflinePlayer(uuid).getName());
+                }
+                // get the number of tasks running that belong to this plugin
+                commandSender.sendMessage("Tasks running: " + Bukkit.getScheduler().getPendingTasks().stream().filter(task -> task.getOwner().getName().equalsIgnoreCase("PlayTimeRewards")).count());
+
+                for (BukkitTask task : Bukkit.getScheduler().getPendingTasks()) {
+                    if (task.getOwner().getName().equalsIgnoreCase("PlayTimeRewards")) {
+                        commandSender.sendMessage(" - Task: " + task.getTaskId());
+                    }
                 }
             } else {
                 commandSender.sendMessage("Invalid argument.");

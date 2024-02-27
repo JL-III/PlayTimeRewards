@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class RewardEvent extends Event {
+public class RewardCheckEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
 
     private final UUID playerUUID;
@@ -20,7 +20,7 @@ public class RewardEvent extends Event {
     @Override
     public @NotNull HandlerList getHandlers() { return HANDLERS; }
 
-    public RewardEvent(UUID playerUUID, long reward) {
+    public RewardCheckEvent(UUID playerUUID, long reward) {
         this.playerUUID = playerUUID;
         this.reward = reward;
     }

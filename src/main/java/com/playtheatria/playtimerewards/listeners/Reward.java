@@ -10,45 +10,31 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class PlayerReward implements Listener {
+public class Reward implements Listener {
 
     private final ConfigManager configManager;
 
     private final ConcurrentHashMap<UUID, Long> playerRewardTotals;
 
-    private final List<UUID> playerOverLimitList;
-
-    public PlayerReward(ConfigManager configManager, ConcurrentHashMap<UUID, Long> playerRewardTotals, List<UUID> playerOverLimitList) {
+    public Reward(ConfigManager configManager, ConcurrentHashMap<UUID, Long> playerRewardTotals) {
         this.configManager = configManager;
         this.playerRewardTotals = playerRewardTotals;
-        this.playerOverLimitList = playerOverLimitList;
     }
 
     @EventHandler
-    public void onPlayerReward(RewardEvent event) {
+    public void onRewardEvent(RewardEvent event) {
         Player player = Bukkit.getPlayer(event.getPlayerUUID());
         if (player == null) {
             return;
         }
-        if (playerRewardTotals.containsKey(player.getUniqueId())) {
-            long total = playerRewardTotals.get(player.getUniqueId()) + event.getReward();
-            if (total > configManager.getRewardCap()) {
-                Bukkit.getConsoleSender().sendMessage("Player: " + player.getName() + " has reached their reward cap for the day!");
-                Bukkit.getConsoleSender().sendMessage("Player: " + player.getName() + " has been added to the blacklist.");
-                playerOverLimitList.add(player.getUniqueId());
-                return;
-            }
-            playerRewardTotals.put(player.getUniqueId(), total);
-        } else {
-            playerRewardTotals.put(player.getUniqueId(), event.getReward());
-        }
-        Bukkit.getConsoleSender().sendMessage("Player " + player.getName() + " has been rewarded " + event.getReward() + " playtime rewards.");
+        playerRewardTotals.put(player.getUniqueId(), event.getReward());
 
-        Bukkit.getConsoleSender().sendMessage("Player's total rewards today: " + playerRewardTotals.get(player.getUniqueId()));
+        Bukkit.getConsoleSender().sendMessage("[PlayTimeRewards]: " + "Player " + player.getName() + " has been rewarded " + event.getReward() + " playtime rewards.");
+        Bukkit.getConsoleSender().sendMessage("[PlayTimeRewards]: " + "Player's total rewards today: " + playerRewardTotals.get(player.getUniqueId()));
+
         player.sendMessage(Component.text(
                 "[PlayTimeRewards]: " + "You have been rewarded " + event.getReward() + " denarii.")
                 .color(NamedTextColor.GREEN)
